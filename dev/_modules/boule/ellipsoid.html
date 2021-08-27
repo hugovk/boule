@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -106,18 +107,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Boule</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../ellipsoids/index.html">Available Ellipsoids</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/normal_gravity.html">Normal Gravity</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
@@ -213,9 +214,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for boule.ellipsoid</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2019 The Boule Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module for defining and setting the reference ellipsoid.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
 <span class="kn">import</span> <span class="nn">attr</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -228,11 +236,19 @@
 <span class="sd">    Reference oblate ellipsoid.</span>
 
 <span class="sd">    The ellipsoid is oblate and spins around it&#39;s minor axis. It is defined by</span>
-<span class="sd">    four parameters and offers other derived quantities as read-only</span>
-<span class="sd">    properties. In fact, all attributes of this class are read-only and cannot</span>
-<span class="sd">    be changed after instantiation.</span>
+<span class="sd">    four parameters (semi-major axis, flattening, geocentric gravitational</span>
+<span class="sd">    constant, and angular velocity) and offers other derived quantities.</span>
 
-<span class="sd">    All ellipsoid parameters are in SI units.</span>
+<span class="sd">    **All attributes of this class are read-only and cannot be changed after</span>
+<span class="sd">    instantiation.**</span>
+
+<span class="sd">    All parameters are in SI units.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Use :class:`boule.Sphere` if you desire zero flattening because there</span>
+<span class="sd">        are singularities for this particular case in the normal gravity</span>
+<span class="sd">        calculations.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -256,30 +272,33 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    We can define a reference unit sphere by using 0 as the flattening:</span>
+<span class="sd">    We can define an ellipsoid by setting the 4 key numerical parameters:</span>
 
-<span class="sd">    &gt;&gt;&gt; sphere = Ellipsoid(</span>
-<span class="sd">    ...     name=&quot;sphere&quot;,</span>
-<span class="sd">    ...     long_name=&quot;Unit sphere&quot;,</span>
+<span class="sd">    &gt;&gt;&gt; ellipsoid = Ellipsoid(</span>
+<span class="sd">    ...     name=&quot;oblate-ellipsoid&quot;,</span>
+<span class="sd">    ...     long_name=&quot;Oblate Ellipsoid&quot;,</span>
 <span class="sd">    ...     semimajor_axis=1,</span>
-<span class="sd">    ...     flattening=0,</span>
+<span class="sd">    ...     flattening=0.5,</span>
 <span class="sd">    ...     geocentric_grav_const=1,</span>
-<span class="sd">    ...     angular_velocity=0</span>
+<span class="sd">    ...     angular_velocity=0,</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; print(sphere) # doctest: +ELLIPSIS</span>
-<span class="sd">    Ellipsoid(name=&#39;sphere&#39;, ...)</span>
-<span class="sd">    &gt;&gt;&gt; print(sphere.long_name)</span>
-<span class="sd">    Unit sphere</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(sphere.semiminor_axis))</span>
-<span class="sd">    1.00</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(sphere.mean_radius))</span>
-<span class="sd">    1.00</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(sphere.linear_eccentricity))</span>
-<span class="sd">    0.00</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(sphere.first_eccentricity))</span>
-<span class="sd">    0.00</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(sphere.second_eccentricity))</span>
-<span class="sd">    0.00</span>
+<span class="sd">    &gt;&gt;&gt; print(ellipsoid) # doctest: +ELLIPSIS</span>
+<span class="sd">    Ellipsoid(name=&#39;oblate-ellipsoid&#39;, ...)</span>
+<span class="sd">    &gt;&gt;&gt; print(ellipsoid.long_name)</span>
+<span class="sd">    Oblate Ellipsoid</span>
+
+<span class="sd">    The class defines several derived attributes based on the input parameters:</span>
+
+<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(ellipsoid.semiminor_axis))</span>
+<span class="sd">    0.50</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(ellipsoid.mean_radius))</span>
+<span class="sd">    0.83</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(ellipsoid.linear_eccentricity))</span>
+<span class="sd">    0.87</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(ellipsoid.first_eccentricity))</span>
+<span class="sd">    0.87</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(ellipsoid.second_eccentricity))</span>
+<span class="sd">    1.73</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -290,6 +309,52 @@
     <span class="n">angular_velocity</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">()</span>
     <span class="n">long_name</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">reference</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@flattening</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_flattening</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">flattening</span><span class="p">,</span> <span class="n">value</span>
+    <span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use,unused-argument</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if flattening is valid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid flattening &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="s2">&quot;Should be greater than zero and lower than 1.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Flattening equal to zero will lead to errors in normal gravity. &quot;</span>
+                <span class="s2">&quot;Use boule.Sphere for representing ellipsoids with zero flattening.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mf">1e-7</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Flattening is too close to zero (&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;). &quot;</span>
+                <span class="s2">&quot;This may lead to inaccurate results and division by zero errors. &quot;</span>
+                <span class="s2">&quot;Use boule.Sphere for representing ellipsoids with zero flattening.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@semimajor_axis</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_semimajor_axis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">semimajor_axis</span><span class="p">,</span> <span class="n">value</span>
+    <span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use,unused-argument</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if semimajor_axis is positive</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid semi-major axis &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;. Should be greater than zero.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@geocentric_grav_const</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_geocentric_grav_const</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">geocentric_grav_const</span><span class="p">,</span> <span class="n">value</span>
+    <span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use,unused-argument</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Warn if geocentric_grav_const is negative</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The geocentric gravitational constant is negative: &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">semiminor_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -314,9 +379,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mean_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The arithmetic mean radius [meters]</span>
-
-<span class="sd">        :math:`R_1 = (2a + b) /3` [Moritz2000]_</span>
+<span class="sd">        The arithmetic mean radius :math:`R_1=(2a+b)/3` [Moritz1988]_ [meters]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">semimajor_axis</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">semiminor_axis</span><span class="p">)</span>
 
@@ -333,7 +396,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">gravity_equator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The norm of the gravity vector at the equator on the ellipsoid [m/s^2]</span>
+<span class="sd">        The norm of the gravity vector on the ellipsoid at the equator [m/s²]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">semiminor_axis</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_eccentricity</span>
         <span class="n">arctan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_eccentricity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">semiminor_axis</span><span class="p">)</span>
@@ -348,7 +411,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">gravity_pole</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;The norm of the gravity vector at the poles on the ellipsoid [m/s^2]&quot;</span>
+        <span class="s2">&quot;The norm of the gravity vector on the ellipsoid at the poles [m/s²]&quot;</span>
         <span class="n">ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">semiminor_axis</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_eccentricity</span>
         <span class="n">arctan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_eccentricity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">semiminor_axis</span><span class="p">)</span>
         <span class="n">aux</span> <span class="o">=</span> <span class="p">(</span>
@@ -394,13 +457,8 @@
 <span class="sd">        This can be useful if you already have the geocentric latitudes and</span>
 <span class="sd">        need the geocentric radius of the ellipsoid (for example, in spherical</span>
 <span class="sd">        harmonic analysis). In these cases, the coordinate conversion route is</span>
-<span class="sd">        not possible since we need a radius to do that in the first place.</span>
-
-<span class="sd">        Boule generally tries to avoid doing coordinate conversions inside</span>
-<span class="sd">        functions in favour of the user handling the conversions prior to</span>
-<span class="sd">        input. This simplifies the code and makes sure that users know</span>
-<span class="sd">        precisely which conversions are taking place. This method is an</span>
-<span class="sd">        exception since a coordinate conversion route would not be possible.</span>
+<span class="sd">        not possible since we need the radial coordinates to do that in the</span>
+<span class="sd">        first place.</span>
 
 <span class="sd">        .. note::</span>
 
@@ -459,7 +517,7 @@
 
 <span class="sd">            N(\phi) = \frac{a}{\sqrt{1 - e^2 \sin^2(\phi)}}</span>
 
-<span class="sd">        Where :math:`a` is the semimajor axis and :math:`e` is the first</span>
+<span class="sd">        Where :math:`a` is the semi-major axis and :math:`e` is the first</span>
 <span class="sd">        eccentricity.</span>
 
 <span class="sd">        This function receives the sine of the latitude as input to avoid</span>
@@ -473,7 +531,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        prime_vertical_radius : float or array-like</span>
-<span class="sd">            Prime vertical radius given in the same units as the semimajor axis</span>
+<span class="sd">            Prime vertical radius given in the same units as the semi-major</span>
+<span class="sd">            axis</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">semimajor_axis</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
@@ -582,7 +641,9 @@
         <span class="n">big_d</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos_latitude</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_eccentricity</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">k</span><span class="p">,</span> <span class="n">big_z</span><span class="p">,</span> <span class="n">big_d</span>
 
-<div class="viewcode-block" id="Ellipsoid.normal_gravity"><a class="viewcode-back" href="../../api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity">[docs]</a>    <span class="k">def</span> <span class="nf">normal_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+<div class="viewcode-block" id="Ellipsoid.normal_gravity"><a class="viewcode-back" href="../../api/generated/boule.Ellipsoid.html#boule.Ellipsoid.normal_gravity">[docs]</a>    <span class="k">def</span> <span class="nf">normal_gravity</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>  <span class="c1"># pylint: disable=too-many-locals</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate normal gravity at any latitude and height.</span>
 
@@ -597,7 +658,10 @@
 <span class="sd">            The (geodetic) latitude where the normal gravity will be computed</span>
 <span class="sd">            (in degrees).</span>
 <span class="sd">        height : float or array</span>
-<span class="sd">            The ellipsoidal (geometric) height of computation point (in meters).</span>
+<span class="sd">            The ellipsoidal (geometric) height of computation the point (in</span>
+<span class="sd">            meters).</span>
+<span class="sd">        si_units : bool</span>
+<span class="sd">            Return the value in mGal (False, default) or SI units (True)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -622,6 +686,8 @@
         <span class="p">)</span>
         <span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="n">cosbeta_l2</span> <span class="o">*</span> <span class="n">b_l</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_velocity</span> <span class="o">**</span> <span class="mi">2</span>
         <span class="n">gamma</span> <span class="o">=</span> <span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span><span class="p">)</span> <span class="o">/</span> <span class="n">big_w</span>
+        <span class="k">if</span> <span class="n">si_units</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">gamma</span>
         <span class="c1"># Convert gamma from SI to mGal</span>
         <span class="k">return</span> <span class="n">gamma</span> <span class="o">*</span> <span class="mf">1e5</span></div>
 
@@ -670,9 +736,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019-2020, The Boule Developers
+        &copy; Copyright 2019-2021, The Boule Developers
       <span class="lastupdated">
-        Last updated on Jul 10, 2020.
+        Last updated on Aug 27, 2021.
       </span>
 
     </p>

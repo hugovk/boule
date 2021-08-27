@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -43,6 +44,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="boule.Ellipsoid" href="generated/boule.Ellipsoid.html" />
@@ -108,22 +110,23 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Boule</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../ellipsoids/index.html">Available Ellipsoids</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/normal_gravity.html">Normal Gravity</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#reference-ellipsoid">Reference Ellipsoid</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/boule.Ellipsoid.html">boule.Ellipsoid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/boule.Sphere.html">boule.Sphere</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a><ul>
@@ -225,9 +228,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-boule">
+  <section id="module-boule">
 <span id="api-reference"></span><span id="api"></span><h1>API Reference<a class="headerlink" href="#module-boule" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="reference-ellipsoid">
+<section id="reference-ellipsoid">
 <h2>Reference Ellipsoid<a class="headerlink" href="#reference-ellipsoid" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -238,13 +241,17 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ellipsoid</span></code></a>(name, semimajor_axis, flattening, …)</p></td>
 <td><p>Reference oblate ellipsoid.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/boule.Sphere.html#boule.Sphere" title="boule.Sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sphere</span></code></a>(name, radius, geocentric_grav_const, …)</p></td>
+<td><p>Reference sphere (zero flattening ellipsoids)</p></td>
+</tr>
 </tbody>
 </table>
-<p>All ellipsoids are instances of the <a class="reference internal" href="generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipsoid</span></code></a> class. See the
-class reference documentation for a list its derived physical properties
-(attributes) and computations/transformations that it can perform (methods).</p>
-</div>
-<div class="section" id="utilities">
+<p>All ellipsoids are instances of the <a class="reference internal" href="generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipsoid</span></code></a> or the
+<a class="reference internal" href="generated/boule.Sphere.html#boule.Sphere" title="boule.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sphere</span></code></a> classes. See the class reference documentation for
+a list their derived physical properties (attributes) and
+computations/transformations that they can perform (methods).</p>
+</section>
+<section id="utilities">
 <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -257,8 +264,8 @@ class reference documentation for a list its derived physical properties
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -280,9 +287,9 @@ class reference documentation for a list its derived physical properties
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019-2020, The Boule Developers
+        &copy; Copyright 2019-2021, The Boule Developers
       <span class="lastupdated">
-        Last updated on Jul 10, 2020.
+        Last updated on Aug 27, 2021.
       </span>
 
     </p>

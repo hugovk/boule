@@ -6,7 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
@@ -43,6 +44,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Installing" href="../install.html" />
@@ -108,7 +110,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <p><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-library">The library</a></li>
@@ -119,12 +121,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Boule</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Guide</span></p>
+<p><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../ellipsoids/index.html">Available Ellipsoids</a></li>
 <li class="toctree-l1"><a class="reference internal" href="normal_gravity.html">Normal Gravity</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<p><span class="caption-text">Reference documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
@@ -227,9 +229,10 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-overview-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-overview-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="overview">
+<section class="sphx-glr-example-title" id="overview">
 <span id="sphx-glr-tutorials-overview-py"></span><span id="id1"></span><h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>The main functionality of Boule is contained in the <a class="reference internal" href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipsoid</span></code></a>
 class.
@@ -248,7 +251,7 @@ defines the centrifugal potential.</p></li>
 </ol>
 <p>With these parameters, Boule can calculate gravity, coordinate conversions, and
 other derived physical and geometric properties of the ellipsoid.</p>
-<div class="section" id="the-library">
+<section id="the-library">
 <h2>The library<a class="headerlink" href="#the-library" title="Permalink to this headline">¶</a></h2>
 <p>All functions and classes in Boule are available in the base namespace of the
 <a class="reference internal" href="../api/index.html#module-boule" title="boule"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> package. This means that you can access all of them with a single
@@ -257,8 +260,8 @@ import:</p>
 <span class="kn">import</span> <span class="nn">boule</span> <span class="k">as</span> <span class="nn">bl</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="ellipsoids">
+</section>
+<section id="ellipsoids">
 <h2>Ellipsoids<a class="headerlink" href="#ellipsoids" title="Permalink to this headline">¶</a></h2>
 <p>Boule comes with <a class="reference internal" href="../ellipsoids/index.html#ellipsoids"><span class="std std-ref">built-in ellipsoids</span></a> that can be accessed
 as global variables in the <a class="reference internal" href="../api/index.html#module-boule" title="boule"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boule</span></code></a> module:</p>
@@ -296,44 +299,47 @@ accessed:</p>
 3.7087546578837722
 </pre></div>
 </div>
-<p>You can also define your own ellipsoid. For example, this would be the
-definition of a sphere with 1000 m radius and dummy values for <span class="math notranslate nohighlight">\(GM\)</span> and
-<span class="math notranslate nohighlight">\(\omega\)</span>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a> <span class="o">=</span> <a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class"><span class="n">bl</span><span class="o">.</span><span class="n">Ellipsoid</span></a><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sphere&quot;</span><span class="p">,</span>
-    <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Ellipsoid with 0 flattening&quot;</span><span class="p">,</span>
-    <span class="n">flattening</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<p>You can also define your own ellipsoid. For example, this would be a definition of an
+ellipsoid with 1000 m semimajor axis, flattening equal to 0.5 and dummy values for
+<span class="math notranslate nohighlight">\(GM\)</span> and <span class="math notranslate nohighlight">\(\omega\)</span>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ellipsoid</span></a> <span class="o">=</span> <a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class"><span class="n">bl</span><span class="o">.</span><span class="n">Ellipsoid</span></a><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Ellipsoid&quot;</span><span class="p">,</span>
+    <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Ellipsoid with 0.5 flattening&quot;</span><span class="p">,</span>
+    <span class="n">flattening</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
     <span class="n">semimajor_axis</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="n">geocentric_grav_const</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">angular_velocity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a><span class="o">.</span><span class="n">semiminor_axis</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a><span class="o">.</span><span class="n">first_eccentricity</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ellipsoid</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ellipsoid</span></a><span class="o">.</span><span class="n">semiminor_axis</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ellipsoid</span></a><span class="o">.</span><span class="n">first_eccentricity</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ellipsoid(name=&#39;Sphere&#39;, semimajor_axis=1000, flattening=0, geocentric_grav_const=1, angular_velocity=1, long_name=&#39;Ellipsoid with 0 flattening&#39;, reference=None)
-1000
-0.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ellipsoid(name=&#39;Ellipsoid&#39;, semimajor_axis=1000, flattening=0.5, geocentric_grav_const=1, angular_velocity=1, long_name=&#39;Ellipsoid with 0.5 flattening&#39;, reference=None)
+500.0
+0.8660254037844386
 </pre></div>
 </div>
-<p>However, the equations for calculating gravity are not suited for the 0
-flattening case. <strong>So don’t define reference spheres like this.</strong> This is due
-to the first eccentricity being 0 (it appears in divisions in the equations).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Ellipsoid.html#boule.Ellipsoid" title="boule.Ellipsoid" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a><span class="o">.</span><span class="n">gravity_pole</span><span class="p">)</span>
+<p>If the ellipsoid has zero flattening (a sphere), you must use the
+<a class="reference internal" href="../api/generated/boule.Sphere.html#boule.Sphere" title="boule.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">boule.Sphere</span></code></a> class instead. For example, this would be the definition of
+a sphere with 1000 m radius and dummy values for <span class="math notranslate nohighlight">\(GM\)</span> and <span class="math notranslate nohighlight">\(\omega\)</span>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/boule.Sphere.html#boule.Sphere" title="boule.Sphere" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a> <span class="o">=</span> <a href="../api/generated/boule.Sphere.html#boule.Sphere" title="boule.Sphere" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class"><span class="n">bl</span><span class="o">.</span><span class="n">Sphere</span></a><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sphere&quot;</span><span class="p">,</span>
+    <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Ellipsoid with 0 flattening&quot;</span><span class="p">,</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">geocentric_grav_const</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">angular_velocity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../api/generated/boule.Sphere.html#boule.Sphere" title="boule.Sphere" class="sphx-glr-backref-module-boule sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sphere</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/miniconda/envs/testing/lib/python3.7/site-packages/boule/ellipsoid.py:137: RuntimeWarning: divide by zero encountered in double_scalars
-  ratio = self.semiminor_axis / self.linear_eccentricity
-/home/travis/miniconda/envs/testing/lib/python3.7/site-packages/boule/ellipsoid.py:142: RuntimeWarning: invalid value encountered in double_scalars
-  / (1.5 * ((1 + 3 * ratio ** 2) * arctan - 3 * ratio))
-nan
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Sphere(name=&#39;Sphere&#39;, radius=1000, geocentric_grav_const=1, angular_velocity=1, long_name=&#39;Ellipsoid with 0 flattening&#39;, reference=None)
 </pre></div>
 </div>
-</div>
-<div class="section" id="computations">
+</section>
+<section id="computations">
 <h2>Computations<a class="headerlink" href="#computations" title="Permalink to this headline">¶</a></h2>
 <p>Ellipsoids can be used for computations generally encountered in geodetic and
 geophysical applications:</p>
@@ -344,7 +350,7 @@ radius.</p></li>
 </ol>
 <p>See the respective tutorials and <a class="reference internal" href="../api/index.html#api"><span class="std std-ref">reference documentation</span></a> for
 more information.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.003 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.008 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-overview-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ebb5519668b799fc9e6596d299314e5a/overview.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">overview.py</span></code></a></p>
@@ -354,8 +360,8 @@ more information.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -377,9 +383,9 @@ more information.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019-2020, The Boule Developers
+        &copy; Copyright 2019-2021, The Boule Developers
       <span class="lastupdated">
-        Last updated on Jul 10, 2020.
+        Last updated on Aug 27, 2021.
       </span>
 
     </p>
